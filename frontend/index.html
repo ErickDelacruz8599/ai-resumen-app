@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Generador de Resúmenes con IA</title>
+
+<style>
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color:#f2f4f8;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+}
+
+.container{
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    width:600px;
+    box-shadow:0px 5px 20px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+}
+
+textarea{
+    
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:14px;
+    resize:none;
+}
+
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:none;
+    border-radius:8px;
+    background-color:#4CAF50;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background-color:#45a049;
+}
+
+.resultado{
+    margin-top:20px;
+    padding:15px;
+    background:#f7f7f7;
+    border-radius:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Generador de Resúmenes</h1>
+
+<textarea id="texto" rows="8" placeholder="Pega aquí el texto que deseas resumir"></textarea>
+
+<br><br>
+
+<label>Tipo de resumen:</label>
+
+<select id="tipoResumen">
+<option value="corto">Resumen corto</option>
+<option value="detallado">Resumen detallado</option>
+</select>
+
+<br><br>
+
+<button onclick="generarResumen()">Generar resumen</button>
+
+<div class="resultado">
+
+<h3>Resumen</h3>
+
+<p id="resultado">Aquí aparecerá el resumen generado por la IA.</p>
+
+</div>
+
+</div>
+
+<script>
+
+async function generarResumen(){
+
+let texto = document.getElementById("texto").value;
+let tipo = document.getElementById("tipoResumen").value;
+
+document.getElementById("resultado").innerText = "Generando resumen...";
+
+let respuesta = await fetch("http://127.0.0.1:8000/resumir",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+text:texto,
+tipo:tipo
+})
+});
+
+let datos = await respuesta.json();
+
+document.getElementById("resultado").innerText = datos.resumen;
+
+}
+
+</script>
+
+</body>
+</html>
